@@ -15,9 +15,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "RP Quick — Australian distressed & undervalue radar",
+  title: "RP Quick — Rochedale distressed & undervalue radar",
   description:
-    "Rank Australian listings by recent price cuts and how far they sit below similar local homes.",
+    "Rank Rochedale and Rochedale South listings by recent price cuts and how far they sit below similar local homes.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

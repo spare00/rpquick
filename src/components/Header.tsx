@@ -7,7 +7,7 @@ export function Header() {
         <Link href="/" className="group">
           <p className="font-display text-2xl tracking-tight">RP Quick</p>
           <p className="text-xs tracking-[0.18em] text-muted uppercase">
-            Distress · undervalue radar
+            Rochedale · Rochedale South
           </p>
         </Link>
         <nav className="flex items-center gap-5 text-sm font-medium">

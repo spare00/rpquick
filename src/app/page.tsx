@@ -21,14 +21,15 @@ export default async function HomePage({
       <section className="mb-8 grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-end">
         <div>
           <p className="mb-3 text-xs font-semibold tracking-[0.22em] text-rust uppercase">
-            Australia bargain radar
+            Rochedale bargain radar
           </p>
           <h1 className="font-display text-4xl leading-tight tracking-tight md:text-5xl">
-            Rank distressed listings first.
+            Rank distressed listings in Rochedale first.
           </h1>
           <p className="mt-4 max-w-xl text-muted">
-            We score homes that have been cut hard in recent days or weeks, or sit well below
-            similar local listings. Open a listing for source links and the rank rationale.
+            Live coverage is limited to Rochedale and Rochedale South so we can test scoring on a
+            small, real set. Open a listing for Domain / realestate.com.au links and the rank
+            rationale.
           </p>
         </div>
         <dl className="grid grid-cols-3 gap-3">
@@ -42,6 +43,14 @@ export default async function HomePage({
       </section>
 
       <FilterBar filters={filters} />
+
+      {listings.some((listing) => listing.source === "seed") ? (
+        <p className="mt-4 rounded-xl border border-gold-soft bg-gold-soft/40 px-4 py-3 text-sm">
+          Showing sample listings. Add Domain API keys to <code className="rounded bg-card px-1">.env</code>{" "}
+          and run <code className="rounded bg-card px-1">npm run ingest:domain</code> to replace them
+          with live Rochedale stock.
+        </p>
+      ) : null}
 
       <p className="mt-6 mb-3 text-sm text-muted">
         {listings.length} listings · default sort is deal score (drop + undervalue + distress)

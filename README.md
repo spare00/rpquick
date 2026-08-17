@@ -1,8 +1,8 @@
 # RP Quick
 
-A web app that ranks Australian listings by **distress likelihood** and **how far they sit below local comps**.
+A web app that ranks **Rochedale** and **Rochedale South** listings by distress likelihood and how far they sit below local comps.
 
-The home page leads with listings that look distressed or clearly underpriced. The detail page shows drop rates, the comparable median, rank reasons, and original Domain / realestate.com.au links.
+Coverage is limited to those two Brisbane suburbs on purpose so live ingest stays small enough to test.
 
 ## Run
 
@@ -14,25 +14,23 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-`db:setup` creates the SQLite schema and loads sample listings (with price history) across Sydney, Melbourne, Brisbane, Perth, and Adelaide.
+`db:setup` creates the SQLite schema and loads a small sample set for the two suburbs. Replace it with live Domain listings as soon as you have API keys.
 
-## Live Domain collection
+## Live data
 
-Get an Agents & Listings client ID and secret from the [Domain Developer Portal](https://developer.domain.com.au/), then add them to `.env`.
+The only reliable automated source is the [Domain developer API](https://developer.domain.com.au/) (Agents & Listings, `api_listings_read`).
 
-```
-DOMAIN_CLIENT_ID=...
-DOMAIN_CLIENT_SECRET=...
-DOMAIN_LOCATIONS=Marrickville,NSW;Brunswick,VIC;West End,QLD
-```
+Public Domain and realestate.com.au search pages block bots (403 / 429). REA has no public listings API. Scraping those sites is not used here.
+
+1. Create an app on the Domain Developer Portal and copy the client ID and secret into `.env`.
+2. Keep `DOMAIN_LOCATIONS=Rochedale,QLD;Rochedale South,QLD`.
+3. Run:
 
 ```bash
 npm run ingest:domain
 ```
 
-Re-ingesting the same listing appends a price snapshot when the ask has changed, then rescores the drop.
-
-realestate.com.au has no public listings API. The REA link on the detail page goes to a suburb search.
+That wipes sample rows and stores current for-sale listings with a numeric price. The first pull has almost no price history, so drop scores stay low until you run ingest again on later days. Undervalue and distress keywords still work on day one.
 
 ## Scores
 

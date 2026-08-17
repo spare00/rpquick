@@ -6,8 +6,8 @@ export default function MethodPage() {
       </p>
       <h1 className="font-display text-4xl tracking-tight">How scores are calculated</h1>
       <p className="mt-4 text-muted">
-        RP Quick tracks asking prices over time and compares each listing with others in the
-        same suburb and spec. Rankings follow the combined deal score.
+        RP Quick tracks asking prices over time and compares each listing with others in
+        Rochedale or Rochedale South with the same spec. Rankings follow the combined deal score.
       </p>
 
       <section className="mt-10 space-y-8 text-sm leading-7">
@@ -38,10 +38,13 @@ export default function MethodPage() {
         <div className="rounded-2xl border border-line bg-card p-5">
           <h2 className="text-lg font-semibold">Data sources</h2>
           <p className="mt-2 text-muted">
-            Seed data is enough to try the UI and scoring. For live collection, put Domain Group
-            API keys in <code className="rounded bg-paper px-1">.env</code> and run{" "}
-            <code className="rounded bg-paper px-1">npm run ingest:domain</code>. realestate.com.au
-            has no public listings API, so the detail page links to a suburb search instead.
+            Live listings come from the official Domain Group Agents & Listings API, scoped to
+            Rochedale and Rochedale South only. Put the client ID and secret in{" "}
+            <code className="rounded bg-paper px-1">.env</code> and run{" "}
+            <code className="rounded bg-paper px-1">npm run ingest:domain</code>. The first pull
+            stores the current ask; drop scores fill in after you run ingest again on later days.
+            Domain and realestate.com.au public search pages block automated access, and REA has
+            no public listings API — detail pages still link out to both sites.
           </p>
         </div>
       </section>

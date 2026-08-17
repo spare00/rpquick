@@ -86,3 +86,8 @@ export async function ingestListings(listings: NormalizedListing[]) {
   await rescoreAll();
   return listings.length;
 }
+
+export async function replaceListings(listings: NormalizedListing[]) {
+  await prisma.listing.deleteMany();
+  return ingestListings(listings);
+}

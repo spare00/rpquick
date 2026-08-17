@@ -8,22 +8,19 @@ export function FilterBar({ filters }: { filters: Filters }) {
     <form className="grid gap-3 rounded-2xl border border-line bg-card p-4 md:grid-cols-12 md:items-end">
       <label className="block text-xs text-muted md:col-span-2">
         View
-        <select name="view" defaultValue={filters.view ?? "hot"} className={`${SELECT} mt-1 w-full`}>
+        <select name="view" defaultValue={filters.view ?? "all"} className={`${SELECT} mt-1 w-full`}>
+          <option value="all">All</option>
           <option value="hot">Distressed & cheap</option>
           <option value="drop">Price drops</option>
           <option value="cheap">Undervalued</option>
-          <option value="all">All</option>
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        State
-        <select name="state" defaultValue={filters.state ?? ""} className={`${SELECT} mt-1 w-full`}>
-          <option value="">All</option>
-          <option value="NSW">NSW</option>
-          <option value="VIC">VIC</option>
-          <option value="QLD">QLD</option>
-          <option value="WA">WA</option>
-          <option value="SA">SA</option>
+        Suburb
+        <select name="suburb" defaultValue={filters.suburb ?? ""} className={`${SELECT} mt-1 w-full`}>
+          <option value="">Both</option>
+          <option value="Rochedale">Rochedale</option>
+          <option value="Rochedale South">Rochedale South</option>
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
@@ -59,11 +56,11 @@ export function FilterBar({ filters }: { filters: Filters }) {
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        Suburb search
+        Street search
         <input
           name="q"
           defaultValue={filters.q ?? ""}
-          placeholder="Marrickville"
+          placeholder="Rochedale Road"
           className={`${SELECT} mt-1 w-full`}
         />
       </label>

@@ -1,4 +1,8 @@
 import type { NormalizedListing } from "../types";
+import {
+  FOCUS_LOCATIONS_ENV,
+  canonicalizeFocusLocation,
+} from "./focus";
 
 type DomainToken = { access_token: string; expires_in: number };
 
@@ -130,9 +134,9 @@ export async function collectDomainListings(options?: {
   }
 
   const locations = parseLocations(
-    options?.locations ?? process.env.DOMAIN_LOCATIONS ?? "Marrickville,NSW",
+    options?.locations ?? process.env.DOMAIN_LOCATIONS ?? FOCUS_LOCATIONS_ENV,
   );
-  const pages = options?.pagesPerSuburb ?? 2;
+  const pages = options?.pagesPerSuburb ?? 8;
   const token = await getToken(clientId, clientSecret);
   const now = new Date();
   const out: NormalizedListing[] = [];
@@ -176,6 +180,14 @@ export async function collectDomainListings(options?: {
         const price = listingPrice(listing);
         if (!price) continue;
         const details = listing.propertyDetails;
+        const focus = canonicalizeFocusLocation(
+          details.suburb ?? location.suburb,
+          details.state ?? location.state,
+        );
+        if (!focus) continue;
+        const suburb = focus.suburb;
+        const state = focus.state;
+        const postcode = focus.postcode;
         const listedAt = listing.dateListed ? new Date(listing.dateListed) : now;
         const image =
           listing.media?.find((m) => m.url)?.url ??
@@ -185,11 +197,11 @@ export async function collectDomainListings(options?: {
           source: "domain",
           sourceId: String(listing.id),
           domainUrl: domainUrl(listing),
-          reaUrl: reaSearchUrl(details.suburb, details.state, details.postcode),
+          reaUrl: reaSearchUrl(suburb, state, postcode),
           address: details.displayableAddress ?? `${details.streetNumber ?? ""} ${details.street ?? ""}`.trim(),
-          suburb: details.suburb ?? location.suburb,
-          state: details.state ?? location.state,
-          postcode: details.postcode ?? "",
+          suburb,
+          state,
+          postcode,
           lat: details.latitude,
           lng: details.longitude,
           propertyType: mapType(details.propertyType),

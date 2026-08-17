@@ -8,7 +8,7 @@ export type ListingWithScore = Listing & {
 };
 
 export type Filters = {
-  state?: string;
+  suburb?: string;
   propertyType?: string;
   beds?: string;
   view?: string;
@@ -25,10 +25,10 @@ export function parseFilters(
   searchParams: Record<string, string | string[] | undefined>,
 ): Filters {
   return {
-    state: first(searchParams.state),
+    suburb: first(searchParams.suburb),
     propertyType: first(searchParams.propertyType),
     beds: first(searchParams.beds),
-    view: first(searchParams.view) ?? "hot",
+    view: first(searchParams.view) ?? "all",
     sort: first(searchParams.sort) ?? "rank",
     q: first(searchParams.q),
   };
@@ -40,7 +40,7 @@ export async function getRankedListings(
   const listings = await prisma.listing.findMany({
     where: {
       score: { isNot: null },
-      ...(filters.state ? { state: filters.state } : {}),
+      ...(filters.suburb ? { suburb: filters.suburb } : {}),
       ...(filters.propertyType ? { propertyType: filters.propertyType } : {}),
       ...(filters.beds
         ? filters.beds === "4"
@@ -62,7 +62,7 @@ export async function getRankedListings(
     },
   });
 
-  const view = filters.view ?? "hot";
+  const view = filters.view ?? "all";
   let rows = listings.filter((row): row is Listing & { score: Score; snapshots: PriceSnapshot[] } =>
     Boolean(row.score),
   );
