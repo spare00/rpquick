@@ -1,5 +1,17 @@
 import { ExternalLink, MapPin } from "lucide-react";
 
+function withUtm(url: string, source: string) {
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.set("utm_source", "rpquick");
+    parsed.searchParams.set("utm_medium", "referral");
+    parsed.searchParams.set("utm_campaign", source);
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export function SourceLinks({
   domainUrl,
   reaUrl,
@@ -23,8 +35,8 @@ export function SourceLinks({
       : `https://maps.google.com/?q=${encodeURIComponent(`${address}, ${suburb} ${state} Australia`)}`;
 
   const links = [
-    { href: domainUrl, label: "View on Domain" },
-    { href: reaUrl, label: "View on realestate.com.au" },
+    { href: domainUrl ? withUtm(domainUrl, "domain") : domainUrl, label: "View on Domain" },
+    { href: reaUrl ? withUtm(reaUrl, "rea") : reaUrl, label: "View on realestate.com.au" },
     { href: maps, label: "View on map", icon: true },
   ].filter((link) => Boolean(link.href));
 

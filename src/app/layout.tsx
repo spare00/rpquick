@@ -33,7 +33,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto flex max-w-6xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <p>
               RP Quick ranks public asking prices and local comps as a research
-              signal only.
+              signal only. Listing data powered by{" "}
+              <a href="https://www.domain.com.au" className="underline hover:text-ink">
+                Domain
+              </a>
+              .
             </p>
             <p>Always verify on the original listing and in person before you buy.</p>
           </div>
