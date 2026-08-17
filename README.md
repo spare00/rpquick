@@ -18,19 +18,20 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Live data
 
-The only reliable automated source is the [Domain developer API](https://developer.domain.com.au/) (Agents & Listings, `api_listings_read`).
+The only reliable automated source is the [Domain developer API](https://developer.domain.com.au/).
 
-Public Domain and realestate.com.au search pages block bots (403 / 429). REA has no public listings API. Scraping those sites is not used here.
-
-1. Create an app on the Domain Developer Portal and copy the client ID and secret into `.env`.
-2. Keep `DOMAIN_LOCATIONS=Rochedale,QLD;Rochedale South,QLD`.
-3. Run:
+1. Create a project and enable the **Agents & Listings** package (`api_listings_read`).
+2. Put the API key in `.env` as `DOMAIN_API_KEY=...` (OAuth client ID/secret still work if you prefer).
+3. Keep `DOMAIN_LOCATIONS=Rochedale,QLD;Rochedale South,QLD`.
+4. Run:
 
 ```bash
 npm run ingest:domain
 ```
 
-That wipes sample rows and stores current for-sale listings with a numeric price. The first pull has almost no price history, so drop scores stay low until you run ingest again on later days. Undervalue and distress keywords still work on day one.
+If Domain returns `Operation not permitted on project`, the key is valid but that project does not have listing-search access yet. Add Agents & Listings on the project, then run ingest again.
+
+The first pull has almost no price history, so drop scores stay low until you run ingest again on later days. Undervalue and distress keywords still work on day one.
 
 ## Scores
 

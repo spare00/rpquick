@@ -92,6 +92,26 @@ function reaSearchUrl(suburb?: string, state?: string, postcode?: string) {
   return `https://www.realestate.com.au/buy/in-${encodeURIComponent(q)}/list-1`;
 }
 
+async function domainAuthHeaders(options?: {
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+}) {
+  const apiKey = options?.apiKey ?? process.env.DOMAIN_API_KEY ?? "";
+  if (apiKey) {
+    return { "X-API-Key": apiKey };
+  }
+
+  const clientId = options?.clientId ?? process.env.DOMAIN_CLIENT_ID ?? "";
+  const clientSecret = options?.clientSecret ?? process.env.DOMAIN_CLIENT_SECRET ?? "";
+  if (!clientId || !clientSecret) {
+    throw new Error("Set DOMAIN_API_KEY, or DOMAIN_CLIENT_ID and DOMAIN_CLIENT_SECRET.");
+  }
+
+  const token = await getToken(clientId, clientSecret);
+  return { Authorization: `Bearer ${token.access_token}` };
+}
+
 async function getToken(clientId: string, clientSecret: string) {
   const response = await fetch("https://auth.domain.com.au/v1/connect/token", {
     method: "POST",
@@ -122,22 +142,18 @@ function parseLocations(raw: string) {
 }
 
 export async function collectDomainListings(options?: {
+  apiKey?: string;
   clientId?: string;
   clientSecret?: string;
   locations?: string;
   pagesPerSuburb?: number;
 }): Promise<NormalizedListing[]> {
-  const clientId = options?.clientId ?? process.env.DOMAIN_CLIENT_ID ?? "";
-  const clientSecret = options?.clientSecret ?? process.env.DOMAIN_CLIENT_SECRET ?? "";
-  if (!clientId || !clientSecret) {
-    throw new Error("DOMAIN_CLIENT_ID and DOMAIN_CLIENT_SECRET are required.");
-  }
+  const authHeaders = await domainAuthHeaders(options);
 
   const locations = parseLocations(
     options?.locations ?? process.env.DOMAIN_LOCATIONS ?? FOCUS_LOCATIONS_ENV,
   );
   const pages = options?.pagesPerSuburb ?? 8;
-  const token = await getToken(clientId, clientSecret);
   const now = new Date();
   const out: NormalizedListing[] = [];
 
@@ -148,7 +164,7 @@ export async function collectDomainListings(options?: {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token.access_token}`,
+            ...authHeaders,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -168,7 +184,7 @@ export async function collectDomainListings(options?: {
       );
       if (!response.ok) {
         throw new Error(
-          `Domain search failed (${location.suburb}): ${response.status} ${await response.text()}`,
+          `Domain search failed (${location.suburb}): ${response.status} ${response.headers.get("x-domain-security-reason") ?? ""} ${await response.text()}`.trim(),
         );
       }
       const hits = (await response.json()) as DomainSearchHit[];
