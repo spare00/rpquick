@@ -1,0 +1,45 @@
+export type NormalizedListing = {
+  source: string;
+  sourceId: string;
+  domainUrl?: string | null;
+  reaUrl?: string | null;
+  address: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+  lat?: number | null;
+  lng?: number | null;
+  propertyType: string;
+  beds: number;
+  baths: number;
+  parking: number;
+  landSqm?: number | null;
+  floorSqm?: number | null;
+  currentPrice: number;
+  displayPrice: string;
+  listedAt: Date;
+  lastSeenAt: Date;
+  headline: string;
+  description: string;
+  imageUrl: string;
+  agentName?: string | null;
+  agencyName?: string | null;
+  features: string[];
+  priceHistory: { price: number; recordedAt: Date }[];
+};
+
+export type ScoreResult = {
+  dealScore: number;
+  dropScore: number;
+  undervalueScore: number;
+  urgencyScore: number;
+  drop7dPct: number | null;
+  drop14dPct: number | null;
+  drop30dPct: number | null;
+  vsCompPct: number | null;
+  compMedian: number | null;
+  compCount: number;
+  reductionCount: number;
+  daysOnMarket: number;
+  reasons: string[];
+};

@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Listing {
+  id            String    @id
+  source        String
+  sourceId      String
+  domainUrl     String?
+  reaUrl        String?
+  address       String
+  suburb        String
+  state         String
+  postcode      String
+  lat           Float?
+  lng           Float?
+  propertyType  String
+  beds          Int
+  baths         Int
+  parking       Int
+  landSqm       Int?
+  floorSqm      Int?
+  currentPrice  Int
+  displayPrice  String
+  listedAt      DateTime
+  lastSeenAt    DateTime
+  lastReducedAt DateTime?
+  headline      String
+  description   String
+  imageUrl      String
+  agentName     String?
+  agencyName    String?
+  features      String    @default("[]")
+  snapshots     PriceSnapshot[]
+  score         Score?
+
+  @@unique([source, sourceId])
+  @@index([suburb, state, propertyType, beds])
+  @@index([state])
+}
+
+model PriceSnapshot {
+  id         String   @id @default(cuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  price      Int
+  recordedAt DateTime
+
+  @@index([listingId, recordedAt])
+}
+
+model Score {
+  listingId       String   @id
+  listing         Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  rank            Int
+  dealScore       Float
+  dropScore       Float
+  undervalueScore Float
+  urgencyScore    Float
+  drop7dPct       Float?
+  drop14dPct      Float?
+  drop30dPct      Float?
+  vsCompPct       Float?
+  compMedian      Int?
+  compCount       Int      @default(0)
+  reductionCount  Int      @default(0)
+  daysOnMarket    Int
+  reasons         String
+  computedAt      DateTime @default(now())
+}
