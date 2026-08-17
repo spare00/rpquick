@@ -23,9 +23,9 @@ export function SourceLinks({
       : `https://maps.google.com/?q=${encodeURIComponent(`${address}, ${suburb} ${state} Australia`)}`;
 
   const links = [
-    { href: domainUrl, label: "Domain에서 보기" },
-    { href: reaUrl, label: "realestate.com.au에서 보기" },
-    { href: maps, label: "지도에서 위치 보기", icon: true },
+    { href: domainUrl, label: "View on Domain" },
+    { href: reaUrl, label: "View on realestate.com.au" },
+    { href: maps, label: "View on map", icon: true },
   ].filter((link) => Boolean(link.href));
 
   return (

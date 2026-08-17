@@ -126,7 +126,7 @@ export async function collectDomainListings(options?: {
   const clientId = options?.clientId ?? process.env.DOMAIN_CLIENT_ID ?? "";
   const clientSecret = options?.clientSecret ?? process.env.DOMAIN_CLIENT_SECRET ?? "";
   if (!clientId || !clientSecret) {
-    throw new Error("DOMAIN_CLIENT_ID / DOMAIN_CLIENT_SECRET 가 필요합니다.");
+    throw new Error("DOMAIN_CLIENT_ID and DOMAIN_CLIENT_SECRET are required.");
   }
 
   const locations = parseLocations(

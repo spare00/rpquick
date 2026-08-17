@@ -9,19 +9,19 @@ export function listingBadges(score: Score): Badge[] {
   const badges: Badge[] = [];
   if (score.urgencyScore >= 40 || (score.drop7dPct ?? 0) >= 5) {
     badges.push({
-      label: "급매 유력",
+      label: "Likely distressed",
       className: "bg-rust-soft text-rust",
     });
   }
   if (score.undervalueScore >= 35) {
     badges.push({
-      label: "저평가",
+      label: "Undervalued",
       className: "bg-sage-soft text-sage",
     });
   }
   if (score.dropScore >= 40) {
     badges.push({
-      label: "급락",
+      label: "Sharp drop",
       className: "bg-gold-soft text-gold",
     });
   }

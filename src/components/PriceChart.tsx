@@ -15,7 +15,7 @@ export function PriceChart({ snapshots }: { snapshots: Point[] }) {
   if (data.length < 2) {
     return (
       <p className="rounded-xl border border-dashed border-line px-4 py-10 text-center text-sm text-muted">
-        아직 가격 변동 기록이 없습니다. 수집이 반복되면 하락 곡선이 쌓입니다.
+        No price history yet. The drop curve fills in as we collect more snapshots.
       </p>
     );
   }

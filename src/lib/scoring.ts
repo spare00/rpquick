@@ -1,5 +1,5 @@
 import { differenceInDays } from "date-fns";
-import { propertyTypeKo } from "./format";
+import { propertyTypeLabel } from "./format";
 import type { ScoreResult } from "./types";
 
 const URGENCY_KEYWORDS: { pattern: RegExp; label: string }[] = [
@@ -13,7 +13,7 @@ const URGENCY_KEYWORDS: { pattern: RegExp; label: string }[] = [
   { pattern: /vendor wants sold/i, label: "vendor wants sold" },
   { pattern: /must be sold/i, label: "must be sold" },
   { pattern: /third price reduction|multiple reductions/i, label: "multiple reductions" },
-  { pattern: /급매/, label: "급매" },
+  { pattern: /급매/, label: "urgent sale" },
 ];
 
 function clamp(n: number, min = 0, max = 100) {
@@ -98,14 +98,14 @@ export function scoreListing(input: {
   if (reductionCount >= 3) dropScore = clamp(dropScore + 10);
 
   if (drop7dPct && drop7dPct >= 4) {
-    reasons.push(`7일 내 가격 ${drop7dPct}% 하락`);
+    reasons.push(`Price down ${drop7dPct}% in 7 days`);
   } else if (drop14dPct && drop14dPct >= 5) {
-    reasons.push(`2주 내 가격 ${drop14dPct}% 하락`);
+    reasons.push(`Price down ${drop14dPct}% in 2 weeks`);
   } else if (drop30dPct && drop30dPct >= 6) {
-    reasons.push(`한 달 내 가격 ${drop30dPct}% 하락`);
+    reasons.push(`Price down ${drop30dPct}% in 30 days`);
   }
   if (reductionCount >= 2) {
-    reasons.push(`${reductionCount}회 연속 가격 인하`);
+    reasons.push(`${reductionCount} consecutive price cuts`);
   }
 
   const others = input.comparablePrices.filter((p) => p > 0);
@@ -119,7 +119,7 @@ export function scoreListing(input: {
     if (compCount < 3) undervalueScore *= 0.6;
     if (vsCompPct >= 6) {
       reasons.push(
-        `동일 지역 ${input.beds}베드 ${propertyTypeKo(input.propertyType)} 중간가 대비 ${vsCompPct}% 저평가 (${compCount}건 비교)`,
+        `${vsCompPct}% below the local median for ${input.beds}-bed ${propertyTypeLabel(input.propertyType)}s (${compCount} comps)`,
       );
     }
   } else if (compMedian) {
@@ -131,14 +131,14 @@ export function scoreListing(input: {
   const hits = URGENCY_KEYWORDS.filter((k) => k.pattern.test(blob)).map((k) => k.label);
   if (hits.length > 0) {
     urgencyScore += Math.min(45, hits.length * 16);
-    reasons.push(`급매 키워드: ${hits.slice(0, 3).join(", ")}`);
+    reasons.push(`Distress keywords: ${hits.slice(0, 3).join(", ")}`);
   }
   if (largestSingleDrop >= 8) {
     urgencyScore += 30;
-    reasons.push(`한 번에 ${round1(largestSingleDrop)}% 인하`);
+    reasons.push(`${round1(largestSingleDrop)}% cut in a single drop`);
   } else if (largestSingleDrop >= 5) {
     urgencyScore += 18;
-    reasons.push(`한 번에 ${round1(largestSingleDrop)}% 인하`);
+    reasons.push(`${round1(largestSingleDrop)}% cut in a single drop`);
   }
   if (lastDropDaysAgo != null && lastDropDaysAgo <= 7) {
     urgencyScore += 20;
@@ -146,10 +146,10 @@ export function scoreListing(input: {
   const daysOnMarket = Math.max(0, differenceInDays(now, input.listedAt));
   if (daysOnMarket >= 90) {
     urgencyScore += 16;
-    reasons.push(`등록 후 ${daysOnMarket}일 경과`);
+    reasons.push(`${daysOnMarket} days on market`);
   } else if (daysOnMarket >= 45) {
     urgencyScore += 8;
-    reasons.push(`등록 후 ${daysOnMarket}일 경과`);
+    reasons.push(`${daysOnMarket} days on market`);
   }
   urgencyScore = clamp(urgencyScore);
 

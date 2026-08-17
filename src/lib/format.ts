@@ -1,7 +1,7 @@
-export const PROPERTY_TYPE_KO: Record<string, string> = {
-  house: "하우스",
-  apartment: "아파트",
-  townhouse: "타운하우스",
+export const PROPERTY_TYPE_LABEL: Record<string, string> = {
+  house: "house",
+  apartment: "apartment",
+  townhouse: "townhouse",
 };
 
 export const STATE_LABEL: Record<string, string> = {
@@ -29,15 +29,15 @@ export function formatPct(value: number | null | undefined, digits = 1) {
 
 export function formatDate(value: Date | string) {
   const date = typeof value === "string" ? new Date(value) : value;
-  return new Intl.DateTimeFormat("ko-KR", {
+  return new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
     month: "short",
     day: "numeric",
   }).format(date);
 }
 
-export function propertyTypeKo(type: string) {
-  return PROPERTY_TYPE_KO[type] ?? type;
+export function propertyTypeLabel(type: string) {
+  return PROPERTY_TYPE_LABEL[type] ?? type;
 }
 
 export function daysBetween(from: Date, to = new Date()) {

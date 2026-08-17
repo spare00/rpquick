@@ -24,20 +24,18 @@ export default async function HomePage({
             Australia bargain radar
           </p>
           <h1 className="font-display text-4xl leading-tight tracking-tight md:text-5xl">
-            급매 확실성이 높은 매물부터
-            <br />
-            랭킹으로 보여줍니다.
+            Rank distressed listings first.
           </h1>
           <p className="mt-4 max-w-xl text-muted">
-            며칠·몇 주 사이 가격을 크게 내린 매물, 같은 지역·같은 스펙 평균보다 싼 매물을
-            모아 점수를 매깁니다. 상세 화면에서 원문 사이트와 랭크 근거를 확인하세요.
+            We score homes that have been cut hard in recent days or weeks, or sit well below
+            similar local listings. Open a listing for source links and the rank rationale.
           </p>
         </div>
         <dl className="grid grid-cols-3 gap-3">
-          <Stat label="감시 매물" value={String(stats.total)} />
-          <Stat label="급매·저평가" value={String(stats.hot)} />
+          <Stat label="Watched" value={String(stats.total)} />
+          <Stat label="Distressed & cheap" value={String(stats.hot)} />
           <Stat
-            label="평균 7일 하락"
+            label="Avg 7-day drop"
             value={stats.avgDrop7d ? formatPct(-stats.avgDrop7d) : "—"}
           />
         </dl>
@@ -46,16 +44,16 @@ export default async function HomePage({
       <FilterBar filters={filters} />
 
       <p className="mt-6 mb-3 text-sm text-muted">
-        {listings.length}건 · 기본 정렬은 종합 점수(하락 + 저평가 + 급매 신호)
+        {listings.length} listings · default sort is deal score (drop + undervalue + distress)
       </p>
 
       <div className="space-y-3">
         {listings.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-line bg-card px-6 py-16 text-center">
-            <p className="font-medium">조건에 맞는 매물이 없습니다.</p>
+            <p className="font-medium">No listings match these filters.</p>
             <p className="mt-2 text-sm text-muted">
-              필터를 넓히거나 <code className="rounded bg-line px-1">npm run db:setup</code> 으로
-              샘플 데이터를 넣으세요.
+              Widen the filters or run <code className="rounded bg-line px-1">npm run db:setup</code>{" "}
+              to load sample data.
             </p>
           </div>
         ) : (

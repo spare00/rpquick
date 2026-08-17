@@ -12,7 +12,7 @@
   --color-sage-soft: #dce8de;
   --color-gold: #9a6b16;
   --color-gold-soft: #f3e5c4;
-  --font-sans: var(--font-noto);
+  --font-sans: var(--font-sans-body);
   --font-display: var(--font-fraunces);
 }
 

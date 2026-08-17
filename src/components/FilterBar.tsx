@@ -7,18 +7,18 @@ export function FilterBar({ filters }: { filters: Filters }) {
   return (
     <form className="grid gap-3 rounded-2xl border border-line bg-card p-4 md:grid-cols-12 md:items-end">
       <label className="block text-xs text-muted md:col-span-2">
-        보기
+        View
         <select name="view" defaultValue={filters.view ?? "hot"} className={`${SELECT} mt-1 w-full`}>
-          <option value="hot">급매·저평가</option>
-          <option value="drop">가격 하락</option>
-          <option value="cheap">저평가</option>
-          <option value="all">전체</option>
+          <option value="hot">Distressed & cheap</option>
+          <option value="drop">Price drops</option>
+          <option value="cheap">Undervalued</option>
+          <option value="all">All</option>
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        주
+        State
         <select name="state" defaultValue={filters.state ?? ""} className={`${SELECT} mt-1 w-full`}>
-          <option value="">전체</option>
+          <option value="">All</option>
           <option value="NSW">NSW</option>
           <option value="VIC">VIC</option>
           <option value="QLD">QLD</option>
@@ -27,22 +27,22 @@ export function FilterBar({ filters }: { filters: Filters }) {
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        유형
+        Type
         <select
           name="propertyType"
           defaultValue={filters.propertyType ?? ""}
           className={`${SELECT} mt-1 w-full`}
         >
-          <option value="">전체</option>
-          <option value="house">하우스</option>
-          <option value="apartment">아파트</option>
-          <option value="townhouse">타운하우스</option>
+          <option value="">All</option>
+          <option value="house">House</option>
+          <option value="apartment">Apartment</option>
+          <option value="townhouse">Townhouse</option>
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        침실
+        Beds
         <select name="beds" defaultValue={filters.beds ?? ""} className={`${SELECT} mt-1 w-full`}>
-          <option value="">전체</option>
+          <option value="">All</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -50,16 +50,16 @@ export function FilterBar({ filters }: { filters: Filters }) {
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        정렬
+        Sort
         <select name="sort" defaultValue={filters.sort ?? "rank"} className={`${SELECT} mt-1 w-full`}>
-          <option value="rank">종합 점수</option>
-          <option value="drop">하락 점수</option>
-          <option value="undervalue">저평가 점수</option>
-          <option value="newest">최근 인하</option>
+          <option value="rank">Deal score</option>
+          <option value="drop">Drop score</option>
+          <option value="undervalue">Undervalue score</option>
+          <option value="newest">Latest cut</option>
         </select>
       </label>
       <label className="block text-xs text-muted md:col-span-2">
-        지역 검색
+        Suburb search
         <input
           name="q"
           defaultValue={filters.q ?? ""}
@@ -72,7 +72,7 @@ export function FilterBar({ filters }: { filters: Filters }) {
           type="submit"
           className="h-10 rounded-md bg-ink px-5 text-sm font-medium text-paper hover:bg-ink/90"
         >
-          필터 적용
+          Apply filters
         </button>
       </div>
     </form>
